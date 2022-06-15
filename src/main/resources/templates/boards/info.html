@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AdminLTE 3 | Project Detail</title>
+
+  <!-- Google Font: Source Sans Pro -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="../../plugins/fontawesome-free/css/all.min.css">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="../../dist/css/adminlte.min.css">
+</head>
+<body class="hold-transition sidebar-mini">
+<!-- Site wrapper -->
+<div class="wrapper">
+
+  <div th:replace="~{head/header :: header}"></div>
+
+  <!-- Content Wrapper. Contains page content -->
+  <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>글 상세보기</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a th:href="@{'/index'}">Home</a></li>
+              <li class="breadcrumb-item active">글 목록</li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
+    <!-- Main content -->
+    <section class="content">
+
+      <!-- Default box -->
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">글 상세</h3>
+
+          <div class="text-right">
+            <div th:if="${session.login != null}">
+              <div th:if="${(dto.writerSeq == session.login.seq) or (session.login.status == T(iducs.springboot.lmoboard.domain.Status).ADMIN)}">
+                <a th:href="@{'/boards/' + ${dto.bor_id} + '/updateForm'}" class="btn btn-sm bg-teal">
+                  <i class="fas fa-pen-to-square">Update</i>
+                </a>
+                <button type="button" class="btn btn-default" data-toggle="modal" data-target="#modal-lg">
+                  Delete
+                </button>
+              </div>
+              <a th:href="@{'/boards'}" class="btn btn-sm btn-primary">
+                <i class="fas fa-address-book">List</i>
+              </a>
+            </div>
+          </div>
+
+          <div class="card-tools">
+            <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+              <i class="fas fa-minus"></i>
+            </button>
+            <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-12 col-md-12 col-lg-8 order-2 order-md-1">
+              <div class="row">
+                <div class="col-12">
+                  <div th:if="${session.login != null}">
+                    <a th:href="@{'/boards/' + ${dto.bor_id} + '/updateForm'}" th:if="${(dto.writerSeq == session.login.seq) or (session.login.status == T(iducs.springboot.lmoboard.domain.Status).ADMIN)}">
+                      <h4>[[${dto.title}]]</h4>
+                    </a>
+                      <h4 th:if="${dto.writerSeq != session.login.seq}">[[${dto.title}]]</h4>
+                  </div>
+                  <div th:unless="${session.login != null}">
+                    <h4>[[${dto.title}]]</h4>
+                  </div>
+                    <div class="post">
+                      <div class="user-block">
+                        <img class="img-circle img-bordered-sm" src="../../dist/img/user1-128x128.jpg" alt="user image">
+                        <span class="username" th:if="${session.login != null}">
+                          <a th:href="@{'/members/' + ${dto.writerId}}">[[${dto.writerName}]]</a>
+                        </span>
+                        <span class="username" th:unless="${session.login != null}">
+                          [[${dto.writerName}]]
+                        </span>
+                        <span class="description">[[${dto.writerEmail}]]</span><span class="badge badge-success" th:text="${#temporals.format(dto.regDate, 'yyyy-MM-dd HH:mm:ss')}"/>
+                      </div>
+                      <!-- /.user-block -->
+                      <p>
+                        [[${dto.content}]]
+                      </p>
+                    </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- /.card-body -->
+      </div>
+      <!-- /.card -->
+
+    </section>
+    <!-- /.content -->
+
+    <div class="modal fade" id="modal-lg">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title" th:text="${dto.bor_id}" />
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <h4>해당 글을 삭제하시겠습니까?</h4>
+            <span>등록일</span><span class="badge badge-success" th:text="${#temporals.format(dto.regDate, 'yyyy-MM-dd HH:mm:ss')}"/>
+            <pre class="text-muted text-sm">
+              <div>
+                <label>ID</label>
+                <input type="text" th:value="*{dto.bor_id}" readonly/>
+              </div>
+              <div>
+                <label>title</label>
+                <input type="text" th:value="*{dto.title}" readonly/>
+              </div>
+              <div>
+                <label>작성자 이메일</label>
+                [[${dto.writerEmail}]]
+              </div>
+            </pre>
+          </div>
+          <div class="modal-footer justify-content-between">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <form action="#" th:action="@{'/boards/' + ${dto.bor_id}}" th:method="delete">
+              <button class="btn btn-primary" type="submit">
+                <i class="fas fa-trash-can">Confirm</i>
+              </button>
+            </form>
+          </div>
+        </div>
+        <!-- /.modal-content -->
+      </div>
+    </div>
+
+  </div>
+  <!-- /.content-wrapper -->
+
+  <div class="modal fade" id="modal-lg">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title" th:text="${dto.bor_id}" />
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <h3> Are you sure delete content?</h3>
+          <pre class="text-muted text-sm">
+              <div>
+                <label>Title</label>
+                <input type="text" name="memberText" th:value="*{dto.title}" readonly/>
+              </div>
+              <div>
+                <label>ID</label>
+                <input type="text" name="memberText" th:value="*{dto.writerId}" readonly/>
+              </div>
+              <div>
+                <label>Name</label>
+                <input type="text" name="memberText" th:value="*{dto.writerName}" readonly/>
+              </div>
+          </pre>
+        </div>
+        <div class="modal-footer justify-content-between">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <form action="#" th:action="@{'/boards/' + ${dto.bor_id}}" th:method="delete">
+            <button class="btn btn-primary" type="submit">
+              <i class="fas fa-trash-can">Confirm</i>
+            </button>
+          </form>
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+  </div>
+
+  <footer class="main-footer">
+    <div class="float-right d-none d-sm-block">
+      <b>Version</b> 3.2.0
+    </div>
+    <strong>Copyright &copy; 2014-2021 <a href="https://adminlte.io">AdminLTE.io</a>.</strong> All rights reserved.
+  </footer>
+
+  <!-- Control Sidebar -->
+  <aside class="control-sidebar control-sidebar-dark">
+    <!-- Control sidebar content goes here -->
+  </aside>
+  <!-- /.control-sidebar -->
+</div>
+<!-- ./wrapper -->
+
+<!-- jQuery -->
+<script src="../../plugins/jquery/jquery.min.js"></script>
+<!-- Bootstrap 4 -->
+<script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<!-- AdminLTE App -->
+<script src="../../dist/js/adminlte.min.js"></script>
+<!-- AdminLTE for demo purposes -->
+<script src="../../dist/js/demo.js"></script>
+</body>
+</html>
