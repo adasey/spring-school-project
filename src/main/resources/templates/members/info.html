@@ -8,9 +8,9 @@
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
   <!-- Font Awesome -->
-  <link rel="stylesheet" href="../plugins/fontawesome-free/css/all.min.css">
+  <link rel="stylesheet" th:href="@{../../plugins/fontawesome-free/css/all.min.css}">
   <!-- Theme style -->
-  <link rel="stylesheet" href="../dist/css/adminlte.min.css">
+  <link rel="stylesheet" th:href="@{../../dist/css/adminlte.min.css}">
 
   <script language="JavaScript" type="text/javascript">
     //<![CDATA[
@@ -74,7 +74,7 @@
                         </ul>
                       </div>
                       <div class="col-5 text-center">
-                        <img src="../dist/img/user1-128x128.jpg" alt="user-avatar" class="img-circle img-fluid">
+                        <img src="../../dist/img/user1-128x128.jpg" alt="user-avatar" class="img-circle img-fluid">
                       </div>
                     </div>
                   </div>
@@ -165,12 +165,12 @@
 <!-- ./wrapper -->
 
 <!-- jQuery -->
-<script src="../plugins/jquery/jquery.min.js"></script>
+<script th:src="@{../../plugins/jquery/jquery.min.js}"></script>
 <!-- Bootstrap 4 -->
-<script src="../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script th:src="@{../../plugins/bootstrap/js/bootstrap.bundle.min.js}"></script>
 <!-- AdminLTE App -->
-<script src="../dist/js/adminlte.min.js"></script>
+<script th:src="@{../../dist/js/adminlte.min.js}"></script>
 <!-- AdminLTE for demo purposes -->
-<script src="../dist/js/demo.js"></script>
+<script th:src="@{../../dist/js/demo.js}"></script>
 </body>
 </html>
