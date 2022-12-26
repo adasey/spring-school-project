@@ -145,13 +145,13 @@
                     </a>
                     <ul class="nav nav-treeview">
                         <li class="nav-item">
-                            <a th:href="@{'/boards'}" class="nav-link">
+                            <a th:href="@{/boards}" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>글 목록</p>
                             </a>
                         </li>
                         <li class="nav-item" th:if="${session.login != null}">
-                            <a th:href="@{'/boards/registerForm'}" class="nav-link">
+                            <a th:href="@{/boards/registerForm}" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>글 등록</p>
                             </a>

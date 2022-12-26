@@ -88,7 +88,7 @@
                       <div class="user-block">
                         <img class="img-circle img-bordered-sm" src="../../dist/img/user1-128x128.jpg" alt="user image">
                         <span class="username" th:if="${session.login != null}">
-                          <a th:href="@{'/members/' + ${dto.writerId}}">[[${dto.writerName}]]</a>
+                          <a th:href="@{'/members/' + ${dto.writerSeq}}">[[${dto.writerName}]]</a>
                         </span>
                         <span class="username" th:unless="${session.login != null}">
                           [[${dto.writerName}]]
