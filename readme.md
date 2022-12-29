@@ -98,7 +98,7 @@ members/login.html
 프론트 부트스트랩이 특수문자와 이메일 @ 입력에 대해 처리합니다.
 
 ```java
-MemberController
+// MemberController
 
 @GetMapping("/login")
 public String getLoginForm(Model model, HttpSession session){
@@ -139,7 +139,7 @@ public String getLogout(HttpSession session) {
     return "redirect:/index";
 }
  
-MemberService
+// MemberService
 
 @Override
 public Member loginByEmail(Member member) {
@@ -152,7 +152,7 @@ public Member loginByEmail(Member member) {
     return dto;
 }
 
-MemberRepository
+// MemberRepository
 
 @Query(value="select m from MemberEntity m where m.email = :email and m.pw = :pw")
 Object getMemberByEmail(@Param("email") String email, @Param("pw") String pw);
@@ -321,7 +321,7 @@ members/lists.html
 순서대로 검색 조건 설정, 회원 정보, 페이지 처리 소스 코드 입니다. 
 
 ```java
-MemberController
+// MemberController
 
 @GetMapping("")
 public String getMembers(PageRequestDTO pageRequestDTO, HttpSession session, Model model) {
@@ -329,7 +329,7 @@ public String getMembers(PageRequestDTO pageRequestDTO, HttpSession session, Mod
     return "members/lists";
 }
 
-MemberService
+// MemberService
 
 @Override
 public PageResultDTO<Member, MemberEntity> readListBy(PageRequestDTO pageRequestDTO) {
@@ -404,7 +404,7 @@ members/registerForm.html
 로그인 여부를 확인하고 로그인 유저의 상태를 enum으로 설정해 해당 enum이 관리자라면 차단 여부를 정할 수 있습니다.
 
 ```java
-MemberController
+// MemberController
 
 @GetMapping("/registerForm")
 public String getRegform(Model model) {
@@ -504,7 +504,7 @@ members/info.html
 사용자 정보와 사용자 삭제 시 화면입니다. 사용자 정보 조회가 세션이 있어야 가능하기 때문에 삭제도 할 수 있습니다.
 
 ```java
-MemberController
+// MemberController
 
 @GetMapping("/{idx}")
 public String getMember(@PathVariable("idx") Long seq, Model model) {
@@ -568,7 +568,7 @@ th:object 를 통해 해당 전달 객체의 멤버변수를 *{} 내부에 선�
 등록 시와 같이 관리자일 경우 사용자의 상태에 따라 유저의 권한이나 차단 여부를 정할 수 있습니다.
 
 ```java
-MembmerController
+// MembmerController
 
 @GetMapping("/{idx}/updateForm")
 public String getUpform(@PathVariable("idx") Long seq, Model model) {
@@ -595,7 +595,7 @@ public String putMember(@ModelAttribute("member") Member member, Model model) {
     return "redirect:/members";
 }
 
-MemberService
+// MemberService
 
 @Override
 public void update(Member member) {
@@ -622,7 +622,7 @@ if (member.getStatus().equals(Status.MEMBER)) {
     }
 }
 
-SearchBoardRepository
+// SearchBoardRepository
 
 @PersistenceContext
 private EntityManager entityManager;
@@ -766,7 +766,7 @@ public void updateBoardStatusREADABLE(Long bor_id) {
 검색과 페이지를 사용할 수 있는 게시글 목록입니다.
 
 ```java
-BoardController
+// BoardController
 
 @GetMapping("")
 public String getBoards(PageRequestDTO pageRequestDTO, HttpSession session, Model model) {
@@ -779,7 +779,7 @@ public String getBoards(PageRequestDTO pageRequestDTO, HttpSession session, Mode
     }
 }
 
-BoardService
+// BoardService
 
 @Override
 public PageResultDTO<Board, Object[]> getList(PageRequestDTO pageRequestDTO) {
@@ -791,7 +791,7 @@ public PageResultDTO<Board, Object[]> getList(PageRequestDTO pageRequestDTO) {
     return new PageResultDTO<>(result, fn);
 }
 
-PageRequestDTO
+// PageRequestDTO
 
 @Builder
 @AllArgsConstructor
@@ -813,7 +813,7 @@ public class PageRequestDTO {
     }
 }
 
-PageResultDTO
+// PageResultDTO
 
 @Data
 public class PageResultDTO<DTO, EN> {
@@ -863,7 +863,19 @@ public class PageResultDTO<DTO, EN> {
     }
 }
 
-SearchBoardRepository
+// BoardService
+
+@Override
+public PageResultDTO<Board, Object[]> getList(PageRequestDTO pageRequestDTO) {
+    Function<Object[], Board> fn = (entities -> entityToDto((BoardEntity) entities[0], (MemberEntity) entities[1], (Long) entities[2]));
+    log.info("get test entities : {}", fn);
+    Sort sort = pageRequestDTO.getOrder() == 0 ? Sort.by("bor_id").descending() : Sort.by("bor_id").ascending();
+    Page<Object[]> result = searchBoardRepository.searchPage(pageRequestDTO.getType(), pageRequestDTO.getKeyword(), pageRequestDTO.getPageable(sort));
+    
+    return new PageResultDTO<>(result, fn);
+}
+
+// SearchBoardRepository
 
 @Override
 public Page<Object[]> searchPage(String type, String keyword, Pageable pageable) {
@@ -994,7 +1006,7 @@ boards/info.html
 만일 사용자가 작성한 게시글이 아니라면 수정, 삭제가 불가능합니다. 관리자는 모든 게시글을 수정, 삭제할 수 있습니다.
 
 ```java
-BoardController
+// BoardController
 
 @GetMapping("/{bor_id}")
 public String getInfo(@PathVariable("bor_id") Long bor_id, HttpSession session, Model model) {
@@ -1022,7 +1034,7 @@ public String delBoard(@ModelAttribute("idx") Long bor_id, HttpSession session) 
     }
 }
 
-BoardService
+// BoardService
 
 @Override
 public Board getById(Long bor_id) {
@@ -1039,7 +1051,7 @@ public void deleteWithRepliesById(Long bor_id) {
     boardRepository.deleteById(bor_id);
 }
 
-BoardRepository
+// BoardRepository
 
 @Query("select b, w, count(r) from BoardEntity b left join b.writer w left join ReplyEntity r on r.boardEntity = b where b.bor_id = :bor_id")
 Object getBoardByBor_id(@Param("bor_id") Long bor_id);
@@ -1057,6 +1069,8 @@ Spring의 DataJPA를 활용해 삭제 함수를 사용했습니다. 조회는 Qu
 ![](img/게시판_게시글_관리자_등록.png)
 
 ```html
+boards/registerForm.html
+
 <div class="form-group">
   <label for="inputProjectLeader">작성자</label>
   <input type="text" id="inputProjectLeader" class="form-control" th:value="${session.login.seq}" th:name="writerSeq" readonly>
@@ -1073,6 +1087,8 @@ Spring의 DataJPA를 활용해 삭제 함수를 사용했습니다. 조회는 Qu
 ```
 
 ```java
+// BoardController
+
 @GetMapping("/registerForm")
 public String getRegForm(HttpSession session, Model model) {
     if (session.getAttribute("login") != null) {
@@ -1101,6 +1117,8 @@ service에서 JPA 상속 repository를 활용해 게시글 저장
 ![](img/게시판_일반회원_자신게시글_수정.png)
 
 ```html
+boards/updateForm.html
+
 <div class="form-group">
   <label for="inputProjectLeader">작성자</label>
   <input type="text" id="inputProjectLeader" class="form-control" th:value="${session.login.seq}" th:name="writerSeq" readonly>
@@ -1128,7 +1146,7 @@ service에서 JPA 상속 repository를 활용해 게시글 저장
 게시글 수정 시 회원이 관리자인지 아닌지 확인되면 게시글의 차단 여부를 변경할 수 있습니다. 게시글 수정으로 들어오면 자동으로 회원의 계정과 같은 사용자로 변경됩니다.
 
 ```java
-BoardController
+// BoardController
 
 @GetMapping("/{bor_id}/updateForm")
 public String getUpform(@PathVariable("bor_id") Long bor_id, HttpSession session, Model model) {
