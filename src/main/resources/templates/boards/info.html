@@ -155,44 +155,44 @@
   </div>
   <!-- /.content-wrapper -->
 
-  <div class="modal fade" id="modal-lg">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h4 class="modal-title" th:text="${dto.bor_id}" />
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <h3> Are you sure delete content?</h3>
-          <pre class="text-muted text-sm">
-              <div>
-                <label>Title</label>
-                <input type="text" name="memberText" th:value="*{dto.title}" readonly/>
-              </div>
-              <div>
-                <label>ID</label>
-                <input type="text" name="memberText" th:value="*{dto.writerId}" readonly/>
-              </div>
-              <div>
-                <label>Name</label>
-                <input type="text" name="memberText" th:value="*{dto.writerName}" readonly/>
-              </div>
-          </pre>
-        </div>
-        <div class="modal-footer justify-content-between">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <form action="#" th:action="@{'/boards/' + ${dto.bor_id}}" th:method="delete">
-            <button class="btn btn-primary" type="submit">
-              <i class="fas fa-trash-can">Confirm</i>
-            </button>
-          </form>
-        </div>
-      </div>
-      <!-- /.modal-content -->
-    </div>
-  </div>
+<!--  <div class="modal fade" id="modal-lg">-->
+<!--    <div class="modal-dialog modal-lg">-->
+<!--      <div class="modal-content">-->
+<!--        <div class="modal-header">-->
+<!--          <h4 class="modal-title" th:text="${dto.bor_id}" />-->
+<!--          <button type="button" class="close" data-dismiss="modal" aria-label="Close">-->
+<!--            <span aria-hidden="true">&times;</span>-->
+<!--          </button>-->
+<!--        </div>-->
+<!--        <div class="modal-body">-->
+<!--          <h3> Are you sure delete content?</h3>-->
+<!--          <pre class="text-muted text-sm">-->
+<!--              <div>-->
+<!--                <label>Title</label>-->
+<!--                <input type="text" name="memberText" th:value="*{dto.title}" readonly/>-->
+<!--              </div>-->
+<!--              <div>-->
+<!--                <label>ID</label>-->
+<!--                <input type="text" name="memberText" th:value="*{dto.writerId}" readonly/>-->
+<!--              </div>-->
+<!--              <div>-->
+<!--                <label>Name</label>-->
+<!--                <input type="text" name="memberText" th:value="*{dto.writerName}" readonly/>-->
+<!--              </div>-->
+<!--          </pre>-->
+<!--        </div>-->
+<!--        <div class="modal-footer justify-content-between">-->
+<!--          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>-->
+<!--          <form action="#" th:action="@{'/boards/' + ${dto.bor_id}}" th:method="delete">-->
+<!--            <button class="btn btn-primary" type="submit">-->
+<!--              <i class="fas fa-trash-can">Confirm</i>-->
+<!--            </button>-->
+<!--          </form>-->
+<!--        </div>-->
+<!--      </div>-->
+<!--      &lt;!&ndash; /.modal-content &ndash;&gt;-->
+<!--    </div>-->
+<!--  </div>-->
 
   <footer class="main-footer">
     <div class="float-right d-none d-sm-block">

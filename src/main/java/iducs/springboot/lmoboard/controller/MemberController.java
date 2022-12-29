@@ -77,11 +77,7 @@ public class MemberController {
     public String postMember(@ModelAttribute("member") Member member, Model model, HttpSession session) {
         memberService.create(member);
         model.addAttribute("member", member);
-
-        if (session.getAttribute("login") == null) {
-            return "index";
-        }
-        return "redirect:/members";
+        return "index";
     }
 
     @GetMapping("")
