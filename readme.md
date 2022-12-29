@@ -95,9 +95,7 @@ members/login.html
 로그인 화면 설정상태
 전송된 세션에서 사용자가 잘못된 로그인이 진행되었는지 확인합니다.
 
-세션에서 modelAttribute로 전환해야 합니다.
-
-프론트 부트스트랩에 의해 특수문자와 이메일 @ 입력에 대해 처리하도록 지원합니다.
+프론트 부트스트랩이 특수문자와 이메일 @ 입력에 대해 처리합니다.
 
 ```java
 MemberController
@@ -140,11 +138,7 @@ public String getLogout(HttpSession session) {
     session.invalidate();
     return "redirect:/index";
 }
-```
-
-로그인 화면을 띄우는 함수들
-
-```java
+ 
 MemberService
 
 @Override
@@ -163,6 +157,8 @@ MemberRepository
 @Query(value="select m from MemberEntity m where m.email = :email and m.pw = :pw")
 Object getMemberByEmail(@Param("email") String email, @Param("pw") String pw);
 ```
+
+로그인 화면을 띄웁니다.
 
 JpaRepository, QuerydslPredicateExecutor를 활용해 @Query annotation을 활용해 SQL문을 직접 작성해 유저의 정보를 가져옵니다.
 
